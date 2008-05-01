@@ -68,6 +68,7 @@ VARIABLE_REPLY = {"RESULT" => {"HEADER"=> ["Variable_name", "Value"],
                               "TYPES"=>["MYSQL_TYPE_VAR_STRING", "MYSQL_TYPE_VAR_STRING"]}, 
                   "SERVER"=>"test-slave"}.freeze 
 
+ERROR_REPLY = {"MYSQL_ERRNO"=>1045, "MYSQL_ERROR"=>"Access denied for user 'harrisj'@'localhost' (using password: NO)", "SERVER"=>"test"}
                      
 def sql_hash(sql)
   {"SQL" => sql}.freeze

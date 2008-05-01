@@ -37,4 +37,9 @@ class TestDbslayerConnection < Test::Unit::TestCase
     
     assert_equal CLIENT_INFO_REPLY['CLIENT_INFO'], reply
   end
+  
+  def test_server_error
+    @slayer.stubs(:cmd_execute).returns(ERROR_REPLY)
+    assert_raise(DbslayerException) { @slayer.sql_query("SELECT * FROM items") }
+  end
 end

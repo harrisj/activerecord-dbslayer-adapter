@@ -7,8 +7,8 @@ module ActiveRecord
     # Establishes a connection to the database that's used by all Active Record objects.
     def self.dbslayer_connection(config) # :nodoc:
       config = config.symbolize_keys
-      host     = config[:host]
-      port     = config[:port]
+      host   = config[:host]
+      port   = config[:port]
       
       connection = ConnectionAdapters::DbslayerConnection.new(host, port)
       ConnectionAdapters::DbslayerAdapter.new(connection, logger, [host, port], config)

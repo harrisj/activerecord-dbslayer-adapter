@@ -6,6 +6,9 @@ require 'json'
 module ActiveRecord
   module ConnectionAdapters
 
+    class DbslayerException < RuntimeError
+    end
+    
     class DbslayerResult
       def initialize(results_hash)
         @hash = results_hash
@@ -55,6 +58,8 @@ module ActiveRecord
     end
 
     class DbslayerConnection
+      attr_reader :host, :port
+      
       def initialize(host='localhost', port=9090)
         @host = host
         @port = port
@@ -64,13 +69,19 @@ module ActiveRecord
       # Executes a SQL query
       def sql_query(sql)
         dbslay_results = cmd_execute(:db, 'SQL' => sql)
-        
+                
         case dbslay_results
         when Hash
-          DbslayerResult.new(dbslay_results['RESULT'])
+          # check for an error
+          if dbslay_results['MYSQL_ERROR']
+            raise DbslayerException, "MySQL Error #{dbslay_results['MYSQL_ERRNO']}: #{dbslay_results['MYSQL_ERROR']}"
+          else
+            DbslayerResult.new(dbslay_results['RESULT'])
+          end
         when Array
           dbslay_results.map { |r| DbslayerResult.new(r['RESULT']) }
         else  
+          raise DbslayerException, "Unknown format for SQL results from DBSlayer"
         end
       end
 
@@ -107,6 +118,19 @@ module ActiveRecord
         @server_version
       end
 
+      def escape_string(str)
+        str.gsub(/([\0\n\r\032\'\"\\])/) do
+          case $1
+          when "\0" then "\\0"
+          when "\n" then "\\n"
+          when "\r" then "\\r"
+          when "\032" then "\\Z"
+          else "\\"+$1
+          end
+        end
+      end
+      alias :quote :escape_string
+      
       private 
       def query_string(commands)
         URI.encode commands.to_json
