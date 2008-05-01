@@ -16,38 +16,15 @@ module ActiveRecord
   end
 
   module ConnectionAdapters
+    ##
+    # This is just a basic inheritance of MysqlColumn
     class DbslayerColumn < MysqlColumn #:nodoc:
-      # def extract_default(default)
-      #   if type == :binary || type == :text
-      #     if default.blank?
-      #       default
-      #     else
-      #       raise ArgumentError, "#{type} columns cannot have a default value: #{default.inspect}"
-      #     end
-      #   elsif missing_default_forged_as_empty_string?(default)
-      #     nil
-      #   else
-      #     super
-      #   end
-      # end
-
       private
-        def simplified_type(field_type)
+        def simplified_type(field_type) #:nodoc:
           return :boolean if DbslayerAdapter.emulate_booleans && field_type.downcase.index("tinyint(1)")
           return :string  if field_type =~ /enum/i
           super
         end
-
-        # MySQL misreports NOT NULL column default when none is given.
-        # We can't detect this for columns which may have a legitimate ''
-        # default (string) but we can for others (integer, datetime, boolean,
-        # and the rest).
-        #
-        # Test whether the column has default '', is not null, and is not
-        # a type allowing default ''.
-        # def missing_default_forged_as_empty_string?(default)
-        #   type != :string && !null && default == ''
-        # end
     end
 
     # The DbslayerAdapter is an adapter to use Rails with the DBSlayer
@@ -63,9 +40,9 @@ module ActiveRecord
     # to your environment.rb file:
     #
     #   ActiveRecord::ConnectionAdapters::DbslayerAdapter.emulate_booleans = false
+    #
+    # MAJOR WARNING: The MySQL adapter in Rails sets the 
     class DbslayerAdapter < MysqlAdapter
-      VERSION = '0.2.0'
-
       def initialize(connection, logger, connection_options, config)
         super(connection, logger, connection_options, config)
         ActiveRecord::Base.allow_concurrency = true

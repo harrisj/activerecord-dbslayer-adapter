@@ -7,6 +7,7 @@ config/hoe.rb
 config/requirements.rb
 lib/active_record/connection_adapters/dbslayer_adapter.rb
 lib/active_record/connection_adapters/dbslayer_connection.rb
+lib/activerecord-dbslayer-adapter.rb
 log/debug.log
 script/console
 script/destroy

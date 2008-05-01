@@ -1,10 +1,10 @@
-require 'active_record/connection_adapters/dbslayer_adapter'
+require 'activerecord-dbslayer-adapter'
 
 AUTHOR = 'Jacob Harris'  # can also be an array of Authors
 EMAIL = "jharris@nytimes.com"
 DESCRIPTION = "An ActiveRecord adapter to DBSlayer"
-GEM_NAME = 'activerecord_dbslayer_adapter' # what ppl will type to install your gem
-RUBYFORGE_PROJECT = 'activerecord_dbslayer_adapter' # The unix name for your project
+GEM_NAME = 'activerecord-dbslayer-adapter' # what ppl will type to install your gem
+RUBYFORGE_PROJECT = 'activerecord-dbslayer-adapter' # The unix name for your project
 HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
 DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
@@ -32,7 +32,7 @@ REV = nil
 # UNCOMMENT IF REQUIRED: 
 # REV = YAML.load(`svn info`)['Revision']
 VERS = ActiveRecord::ConnectionAdapters::DbslayerAdapter::VERSION + (REV ? ".#{REV}" : "")
-RDOC_OPTS = ['--quiet', '--title', 'activerecord_dbslayer_adapter documentation',
+RDOC_OPTS = ['--quiet', '--title', 'activerecord-dbslayer-adapter documentation',
     "--opname", "index.html",
     "--line-numbers", 
     "--main", "README",

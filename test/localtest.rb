@@ -1,8 +1,5 @@
 require 'rubygems'
-$:.unshift(File.join(File.dirname(__FILE__), %w[.. lib]))
-
-require 'active_record'
-require 'active_record/connection_adapters/dbslayer_adapter'
+require 'activerecord-dbslayer-adapter'
 
 ActiveRecord::Base.establish_connection({
   :adapter => 'dbslayer',
