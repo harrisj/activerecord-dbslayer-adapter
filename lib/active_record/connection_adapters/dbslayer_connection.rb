@@ -70,16 +70,21 @@ module ActiveRecord
       def sql_query(sql)
         dbslay_results = cmd_execute(:db, 'SQL' => sql)
                 
-        case dbslay_results
-        when Hash
-          # check for an error
-          if dbslay_results['MYSQL_ERROR']
-            raise DbslayerException, "MySQL Error #{dbslay_results['MYSQL_ERRNO']}: #{dbslay_results['MYSQL_ERROR']}"
-          else
-            DbslayerResult.new(dbslay_results['RESULT'])
+        # check for an error
+        if dbslay_results['MYSQL_ERROR']
+          raise DbslayerException, "MySQL Error #{dbslay_results['MYSQL_ERRNO']}: #{dbslay_results['MYSQL_ERROR']}"
+        elsif dbslay_results['RESULT']
+          result = dbslay_results['RESULT']
+          case result
+          when Hash
+            DbslayerResult.new(result)
+          when Array
+            result.map {|r| DbslayerResult.new(r) }
+          else  
+            raise DbslayerException, "Unknown format for SQL results from DBSlayer"
           end
-        when Array
-          dbslay_results.map { |r| DbslayerResult.new(r['RESULT']) }
+        elsif dbslay_results['SUCCESS']
+          return dbslay_results['SUCCESS']
         else  
           raise DbslayerException, "Unknown format for SQL results from DBSlayer"
         end
@@ -106,14 +111,14 @@ module ActiveRecord
 
       def client_version_num
         if @client_version.nil?
-          @client_version = cmd_execute(:db, 'CLIENT_VERSION' => true)["CLIENT_VERSION"]
+          @client_version = Integer(cmd_execute(:db, 'CLIENT_VERSION' => true)["CLIENT_VERSION"])
         end
         @client_version
       end
 
       def server_version_num
         if @server_version.nil?
-          @server_version = cmd_execute(:db, 'SERVER_VERSION' => true)["SERVER_VERSION"]
+          @server_version = Integer(cmd_execute(:db, 'SERVER_VERSION' => true)["SERVER_VERSION"])
         end
         @server_version
       end

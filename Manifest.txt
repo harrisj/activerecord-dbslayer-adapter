@@ -16,6 +16,7 @@ script/txt2html
 setup.rb
 tasks/deployment.rake
 tasks/environment.rake
+tasks/rcov.rake
 tasks/website.rake
 test/helper.rb
 test/localtest.rb

@@ -10,6 +10,10 @@ require 'active_record/connection_adapters/dbslayer_adapter'
 
 STAT_REPLY = {"STAT" => "STAT"}
 
+CLIENT_INFO_REPLY = {"CLIENT_INFO" => "5.2.27"}
+
+VERSION_NUM_REPLY = {"SERVER_VERSION" => "50037", "CLIENT_VERSION" => "50037"}
+
 # Let's mock out the DBSlayer reply
 CITY_ROWS = [[123, "Mumbai (Bombay)" , "India" , 10500000] ,
             [4112, "Seoul" , "South Korea" , 9981619] ,
@@ -23,7 +27,7 @@ CITY_ROWS = [[123, "Mumbai (Bombay)" , "India" , 10500000] ,
             [1, "New York" , "United States" , 8008278]
            ].freeze
 
-CITY_TYPES = ["MYSQL_TYPE_STRING", "MYSQL_TYPE_STRING" , "MYSQL_TYPE_LONG"].freeze
+CITY_TYPES = ["MYSQL_TYPE_INTEGER", "MYSQL_TYPE_STRING", "MYSQL_TYPE_STRING" , "MYSQL_TYPE_LONG"].freeze
 
 CITY_HEADER = ["id", "city_name" , "country_name" , "population"].freeze
    
@@ -34,6 +38,27 @@ CITY_RESULTS = {
               }
 }.freeze
 
+COUNTRY_ROWS = [[1, 'United States'], [2, 'Canada'], [3, 'India']].freeze
+
+COUNTRY_TYPES = ["MYSQL_TYPE_INTEGER", "MYSQL_TYPE_STRING"]
+
+COUNTRY_HEADER = ["id", "name"]
+
+MULTIPLE_RESULTS = {
+  "RESULT" => [{"TYPES" =>  CITY_TYPES, 
+              "HEADER" =>  CITY_HEADER, 
+              "ROWS" => CITY_ROWS
+              },
+              
+              {"TYPES" =>  COUNTRY_TYPES, 
+               "HEADER" =>  COUNTRY_HEADER, 
+               "ROWS" => COUNTRY_ROWS
+              }
+    
+              ]
+}.freeze
+
+NULL_RESULT = {"SUCCESS" => true}
 
 SHOW_TABLES_REPLY = {"RESULT"=> {"HEADER"=> ["Tables_in_Test_Database"], 
                      "ROWS" => [["table1"], ["table2"]], 
