@@ -4,7 +4,7 @@ AUTHOR = 'Jacob Harris'  # can also be an array of Authors
 EMAIL = "jharris@nytimes.com"
 DESCRIPTION = "An ActiveRecord adapter to DBSlayer"
 GEM_NAME = 'activerecord-dbslayer-adapter' # what ppl will type to install your gem
-RUBYFORGE_PROJECT = 'activerecord-dbslayer-adapter' # The unix name for your project
+RUBYFORGE_PROJECT = 'ar-dbslayer' # The unix name for your project
 HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
 DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
