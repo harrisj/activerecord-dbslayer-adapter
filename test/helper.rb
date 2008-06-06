@@ -1,7 +1,7 @@
 require 'rubygems'
+require 'test/unit'
 require 'active_support'
 require 'active_record'
-require 'test/unit'
 require 'mocha'
 
 $:.unshift(File.join(File.dirname(__FILE__), %w[.. lib]))
@@ -58,7 +58,13 @@ MULTIPLE_RESULTS = {
               ]
 }.freeze
 
-NULL_RESULT = {"SUCCESS" => true}
+NULL_RESULT = {"RESULT" => {"SUCCESS" => true}}.freeze
+
+INSERT_ID_RESULT = {"RESULT" => {"AFFECTED_ROWS" => 1 , "INSERT_ID" => 1 , "SUCCESS" => true} , "SERVER" => "dbslayer"}.freeze
+                         
+UPDATE_RESULT = {"RESULT" => {"AFFECTED_ROWS" => 42 , "SUCCESS" => true} , "SERVER" => "dbslayer"}.freeze
+
+INSERT_THEN_SELECT_RESULT = {"RESULT"=> [{"AFFECTED_ROWS"=>1, "INSERT_ID"=>5, "SUCCESS"=>true}, {"HEADER"=>["id", "name"], "ROWS"=>[[1, "Brooklyn"], [2, "Queens"], [3, "Staten Island"], [4, "Queens"], [5, "Paramus"]], "TYPES"=>["MYSQL_TYPE_LONG", "MYSQL_TYPE_VAR_STRING"]}], "SERVER"=>"dbslayer"}.freeze
 
 SHOW_TABLES_REPLY = {"RESULT"=> {"HEADER"=> ["Tables_in_Test_Database"], 
                      "ROWS" => [["table1"], ["table2"]], 

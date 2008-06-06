@@ -34,14 +34,6 @@ class TestDbslayerConnection < Test::Unit::TestCase
     assert_not_nil reply.rows
   end
   
-  def test_sql_null_return
-    sql_command = "update set posted = 1"
-    @slayer.stubs(:cmd_execute).with(:db, {"SQL" => sql_command}).returns(NULL_RESULT)
-    
-    status = @slayer.sql_query(sql_command)
-    assert_equal true, status
-  end
-  
   def test_multiple_results
     sql_command = "select * from cities limit 10; select * from countries limit 3"
     @slayer.stubs(:cmd_execute).with(:db, {"SQL" => sql_command}).returns(MULTIPLE_RESULTS)

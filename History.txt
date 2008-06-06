@@ -1,3 +1,9 @@
+== 0.3.0 2008-06-05
+
+* 2 major enhancements
+  * insert now supports the DBSlayer's INSERT_ID
+  * update now correctly uses the DBSlayer's AFFECTED_ROWS
+
 == 0.2.5 2008-05-06
 
 * 3 minor enhancements:

@@ -26,6 +26,18 @@ module ActiveRecord
         @hash['HEADER']
       end
       
+      def success?
+        @hash['SUCCESS']
+      end
+      
+      def affected_rows
+        @hash['AFFECTED_ROWS']
+      end
+      
+      def insert_id
+        @hash['INSERT_ID']
+      end
+      
       ## Compatibility to the MySQL ones
       def num_rows
         return 0 if rows.nil?
@@ -58,11 +70,13 @@ module ActiveRecord
     end
 
     class DbslayerConnection
-      attr_reader :host, :port
+      attr_reader :host, :port, :insert_id, :affected_rows
       
       def initialize(host='localhost', port=9090)
         @host = host
         @port = port
+        @insert_id = nil
+        @affected_rows = nil
       end
 
       ##
@@ -73,18 +87,19 @@ module ActiveRecord
         # check for an error
         if dbslay_results['MYSQL_ERROR']
           raise DbslayerException, "MySQL Error #{dbslay_results['MYSQL_ERRNO']}: #{dbslay_results['MYSQL_ERROR']}"
-        elsif dbslay_results['RESULT']
-          result = dbslay_results['RESULT']
+        elsif result = dbslay_results['RESULT']
           case result
           when Hash
-            DbslayerResult.new(result)
+            out = DbslayerResult.new(result)
+            set_affected!(out)
+            out
           when Array
-            result.map {|r| DbslayerResult.new(r) }
+            out = result.map {|r| DbslayerResult.new(r) }
+            set_affected!(out.last)
+            out
           else  
             raise DbslayerException, "Unknown format for SQL results from DBSlayer"
           end
-        elsif dbslay_results['SUCCESS']
-          return dbslay_results['SUCCESS']
         else  
           raise DbslayerException, "Unknown format for SQL results from DBSlayer"
         end
@@ -148,6 +163,11 @@ module ActiveRecord
         open(url) do |file|
           JSON.parse(file.read)
         end
+      end
+      
+      def set_affected!(result)
+        @insert_id = result.insert_id
+        @affected_rows = result.affected_rows
       end
     end
   end

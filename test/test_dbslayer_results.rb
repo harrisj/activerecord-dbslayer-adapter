@@ -30,6 +30,10 @@ class Test_ActiveRecord_ConnectionAdapters_DbslayerResults < Test::Unit::TestCas
     assert_equal CITY_TYPES, @result.types
   end
   
+  def test_success?
+    assert !@result.success?
+  end
+  
   def test_hash_rows
     assert_equal CITY_HASH_ROWS, @result.hash_rows
   end
@@ -50,5 +54,25 @@ class Test_ActiveRecord_ConnectionAdapters_DbslayerResults < Test::Unit::TestCas
     end
     
     assert_equal CITY_HASH_ROWS, output
+  end
+end
+
+class Test_ActiveRecord_ConnectionAdapters_DbslayerResults_Insert < Test::Unit::TestCase
+  include ActiveRecord::ConnectionAdapters
+  
+  def setup
+    @result = ActiveRecord::ConnectionAdapters::DbslayerResult.new(INSERT_ID_RESULT["RESULT"])
+  end
+  
+  def test_success?
+    assert @result.success?
+  end
+  
+  def test_affected_rows
+    assert_equal 1, @result.affected_rows
+  end
+  
+  def test_insert_id
+    assert_equal 1, @result.insert_id
   end
 end

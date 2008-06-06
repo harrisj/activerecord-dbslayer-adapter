@@ -339,9 +339,10 @@ module ActiveRecord
         end
 
         # Executes the update statement and returns the number of rows affected.
-        def update_sql(sql, name = nil)
-          execute(sql, name).rows[0][0]
-        end
+        # def update_sql(sql, name = nil)
+        #   execute(sql, name)
+        # end
+        # 
         
         def supports_views?
           ## get mysql version

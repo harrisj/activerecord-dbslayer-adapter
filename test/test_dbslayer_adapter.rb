@@ -29,12 +29,20 @@ class Test_ActiveRecord_ConnectionAdapters_DbslayerAdapter < Test::Unit::TestCas
     assert_equal CITY_ROWS, rows
   end
   
-  def test_insert_sql_with_id
+  def test_insert_returns_id
+    insert_sql = "insert into cities(name) values(\"Seattle\")"
+    @adapter.raw_connection.expects(:cmd_execute).with(:db, sql_hash(insert_sql)).returns(INSERT_ID_RESULT)
     
+    id = @adapter.insert_sql(insert_sql)
+    assert_equal 1, id
   end
   
-  def test_insert_sql_no_id
+  def test_update_affected_rows
+    update_sql = "update cities set urban=1"
+    @adapter.raw_connection.expects(:cmd_execute).with(:db, sql_hash(update_sql)).returns(UPDATE_RESULT)
     
+    affected_rows = @adapter.send :update_sql, update_sql
+    assert_equal 42, affected_rows
   end
   
   def test_tables
