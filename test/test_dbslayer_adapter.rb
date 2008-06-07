@@ -16,7 +16,8 @@ class Test_ActiveRecord_ConnectionAdapters_DbslayerAdapter < Test::Unit::TestCas
   end
   
   def test_active_fail?
-    
+    @adapter.raw_connection.expects(:mysql_stats).raises(RuntimeError)
+    assert_equal false, @adapter.active?
   end
   
   def test_select_rows
@@ -44,6 +45,7 @@ class Test_ActiveRecord_ConnectionAdapters_DbslayerAdapter < Test::Unit::TestCas
     affected_rows = @adapter.send :update_sql, update_sql
     assert_equal 42, affected_rows
   end
+  
   
   def test_tables
     @adapter.raw_connection.expects(:cmd_execute).with(:db, sql_hash("SHOW TABLES")).returns(SHOW_TABLES_REPLY)

@@ -34,6 +34,15 @@ class Test_ActiveRecord_ConnectionAdapters_DbslayerResults < Test::Unit::TestCas
     assert !@result.success?
   end
   
+  def test_num_rows_nil
+    @result = ActiveRecord::ConnectionAdapters::DbslayerResult.new({})
+    assert_equal 0, @result.num_rows
+  end
+  
+  def test_num_rows
+    assert_equal 10, @result.num_rows
+  end
+  
   def test_hash_rows
     assert_equal CITY_HASH_ROWS, @result.hash_rows
   end
