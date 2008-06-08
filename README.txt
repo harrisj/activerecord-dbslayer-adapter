@@ -58,7 +58,7 @@ All of the other normal database setting like the MySQL server, username, passwo
 
 (The MIT License)
 
-Copyright (c) 2008
+Copyright (c) 2008 The New York Times
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
