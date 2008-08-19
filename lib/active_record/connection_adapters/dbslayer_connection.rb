@@ -82,8 +82,14 @@ module ActiveRecord
       ##
       # Executes a SQL query
       def sql_query(sql)
-        dbslay_results = cmd_execute(:db, 'SQL' => sql)
-                
+				begin
+        	dbslay_results = cmd_execute(:db, 'SQL' => sql)
+        rescue OpenURI::HTTPError
+					raise DbslayerException, "Error connecting to dbslayer #{host}:#{port}"
+				rescue JSON::ParserError
+					raise DbslayerException, "Unable to parse result from JSON"
+	      end
+	
         # check for an error
         if dbslay_results['MYSQL_ERROR']
           raise DbslayerException, "MySQL Error #{dbslay_results['MYSQL_ERRNO']}: #{dbslay_results['MYSQL_ERROR']}"
