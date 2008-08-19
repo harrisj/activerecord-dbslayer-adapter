@@ -64,6 +64,16 @@ class TestDbslayerConnection < Test::Unit::TestCase
     @slayer.stubs(:cmd_execute).returns(ERROR_REPLY)
     assert_raise(ActiveRecord::ConnectionAdapters::DbslayerException) { @slayer.sql_query("SELECT * FROM items") }
   end
+
+	def test_http_error
+		@slayer.stubs(:cmd_execute).raises(OpenURI::HTTPError)
+		assert_raise(ActiveRecord::ConnectionAdapters::DbslayerException) { @slayer.sql_query("SELECT * FROM items") }
+	end
+	
+	def test_json_error
+		@slayer.stubs(:cmd_execute).raises(OpenURI::HTTPError)
+		assert_raise(ActiveRecord::ConnectionAdapters::DbslayerException) { @slayer.sql_query("SELECT * FROM items") }
+	end
   
   def test_client_num
     @slayer.stubs(:cmd_execute).with(:db, {"CLIENT_VERSION" => true}).returns(VERSION_NUM_REPLY)
