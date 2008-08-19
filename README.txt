@@ -23,8 +23,10 @@ The biggest problem is that Rails sets a connection variable for all MySQL conne
 	
 The problem only occurs when searching for null autoincrement primary key columns (not other columns). With the regular MySQL adapter, this would return records with an id value (normally errors). With the DBSlayer adapter, it returns the last inserted item into the table (this is the default MySQL behavior). Luckily, this is not a common idiom in Rails, but you should be aware if you attempt to use it for finding errors in your tables.
 
-== FEATURES/PROBLEMS:
+== TO DO:
 
+* Return stats from DBSlayer's MYSQL stats => ActiveRecord
+* Figure out if there is any way I could support Rails' block-based transaction scheme
 * More tests
 * Better documentation
 
